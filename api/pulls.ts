@@ -16,9 +16,20 @@ export const getPullRequest = ({owner, repository, number}) => {
  * Pull requestをマージする
  * @doc https://docs.github.com/en/rest/reference/repos#merging
  */
-export const mergePullRequest = ({owner, repository, number}) => {
+type mergePullRequestProps = {
+  owner: string
+  repository: string
+  base: string
+  head: string
+  commit_message?: string
+}
+export const mergePullRequest = ({owner, repository, base, head, commit_message}: mergePullRequestProps) => {
   console.log('getPullRequest')
-  return request(`/repos/${owner}/${repository}/pulls/${number}`)
+  return request(`/repos/${owner}/${repository}/merges`, 'POST', {
+    base,
+    head,
+    commit_message
+  })
 }
 
 
