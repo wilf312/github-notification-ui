@@ -6,7 +6,8 @@
   "author": "OkadaGenya <g.okada.wilf+github@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "next dev -p 50000"
+    "start": "next dev -p 50000",
+    "vercel-build": "npm run prepare && next build"
   },
   "dependencies": {
     "date-fns": "^2.16.1",
