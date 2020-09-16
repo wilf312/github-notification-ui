@@ -1,18 +1,40 @@
-import {token} from '../token'
+import {getToken} from '../token'
 const domain = process.env.domain || 'https://api.github.com'
-const defaultHeaders = new Headers()
-defaultHeaders.append('Authorization', `token ${token}`)
-defaultHeaders.append('accept', `application/vnd.github.v3+json`)
+
+const getHeaders = () => {
+  const defaultHeaders = new Headers()
+  defaultHeaders.append('Authorization', `token ${getToken()}`)
+  defaultHeaders.append('accept', `application/vnd.github.v3+json`)
+
+  return defaultHeaders
+}
 
 /**
  * @param path /path/to
  * @doc rate limit https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting
  */
-export const request = (path, method = 'GET', body = {}) => {
+type customHeadersOptionNotification = {
+  'If-Modified-Since'?: string
+}
+type Options = {
+  method?: string
+  customHeaders?: customHeadersOptionNotification
+  body?: Object
+}
+export const request = (path, {
+  method = 'GET',
+  customHeaders = {},
+  body = {}
+}: Partial<Options> = {}) => {
+
+  const headers = getHeaders()
+  for (const [key, value] of Object.entries(customHeaders)) {
+    headers.append(key, value)
+  }
 
   let requestInit: RequestInit = {
     method,
-    headers: defaultHeaders
+    headers
   }
 
   if (method !== 'GET' && Object.keys(body).length > 0) {
@@ -21,7 +43,6 @@ export const request = (path, method = 'GET', body = {}) => {
       body: JSON.stringify(body)
     }
   }
-
 
   return fetch(`${domain}${path}`, requestInit)
 }
