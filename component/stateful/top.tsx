@@ -15,15 +15,12 @@ export const Top = () => {
       return
     }
     getNotifications().then(d => {
-      console.log(d)
       if (d.status === 200) {
         return d.json()
       } else {
         return []
       }
     }).then(value => {
-      console.log(value)
-
       const valueAddedPRNumber: NotificationAddedPRNumber[] = value.map((d: Notification): NotificationAddedPRNumber => {
         
         var a = d.subject.url.split('/')

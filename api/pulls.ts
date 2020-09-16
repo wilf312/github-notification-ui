@@ -7,7 +7,6 @@ export type { Pulls } from './pulls.type'
  * @doc https://docs.github.com/en/rest/reference/pulls#get-a-pull-request
  */
 export const getPullRequest = ({owner, repository, number}) => {
-  console.log('getPullRequest')
   return request(`/repos/${owner}/${repository}/pulls/${number}`)
 }
 
@@ -24,7 +23,6 @@ type mergePullRequestProps = {
   commit_message?: string
 }
 export const mergePullRequest = ({owner, repository, base, head, commit_message}: mergePullRequestProps) => {
-  console.log('getPullRequest')
   return request(`/repos/${owner}/${repository}/merges`, {
     method: 'POST',
     body: {

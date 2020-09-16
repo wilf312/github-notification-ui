@@ -17,19 +17,14 @@ export const useGithubLogin = () => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged( (user) => {
       if(user && getAccessToken()) {
-        console.log('Login Complete!')
-        console.log(user);
-        console.log(getAccessToken());
         setIsLoggedin(true)
         setToken(getAccessToken())
       }
       else {
-        console.log('Not Login')
         const provider = new firebase.auth.GithubAuthProvider()
         provider.addScope('repo')
         provider.addScope('notifications')
         firebase.auth().signInWithPopup(provider).then((result) => {
-          console.log('auth---------', result)
           const oauth = result.credential as firebase.auth.OAuthCredential
 
           // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -64,10 +59,6 @@ export const useGithubLogin = () => {
       return
     }
     getScope().then((d: Response) => {
-      console.log('getScope', {
-        acceptedScope: d.headers.get('X-Accepted-OAuth-Scopes'),
-        scope: d.headers.get('X-OAuth-Scopes'),
-      })
       setScope({
         acceptedScope: d.headers.get('X-Accepted-OAuth-Scopes'),
         scope: d.headers.get('X-OAuth-Scopes'),

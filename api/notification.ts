@@ -18,7 +18,6 @@ export const getNotifications = () => {
  * @doc https://docs.github.com/en/rest/reference/activity#mark-notifications-as-read
  */
 export const markNotificationAsRead = () => {
-  console.log(formatISO(new Date()))
   return request(`/notifications`, {
     method: 'PUT',
     body: {

@@ -23,7 +23,6 @@ export const NotificationItem = (props: props) => {
       number: props.notification.prNumber,
       repository: repository.name
     }).then(v => v.json()).then((d: Pulls) => {
-      console.log(d)
       setPr(d)
     })
   }, [props.notification.id])
@@ -36,7 +35,6 @@ export const NotificationItem = (props: props) => {
     {props.isOwner && pr?.state === 'open' &&
       <div>
         <button type="button" onClick={() => {
-          console.log('merge')
           mergePullRequest({
             owner: repository.owner.login,
             repository: repository.name,
@@ -47,7 +45,6 @@ export const NotificationItem = (props: props) => {
       </div>
     }
     <button type="button" onClick={() => {
-      console.log('read')
       markNotificationAsThread(notification.id)
     }}>read</button>
 
