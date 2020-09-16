@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 
 import {setToken} from "../../token"
-import firebase from '../../initialize/firebase'
+import firebase from '../../globalPlugin/firebase'
 import {getAccessToken} from '../../helper/session'
 import {getScope} from '../../api/scope'
 
