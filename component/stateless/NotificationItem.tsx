@@ -1,8 +1,7 @@
-import { NotificationAddedPRNumber } from '../../types/notification'
+import { NotificationAddedPRNumber } from 'types/notification'
 import { useEffect, useState } from 'react'
-import {getPullRequest, Pulls, mergePullRequest} from '../../api/pulls'
-import {markNotificationAsThread} from '../../api/notification'
-import { isWorker } from 'cluster'
+import {getPullRequest, Pulls, mergePullRequest} from 'api/pulls'
+import {markNotificationAsThread} from 'api/notification'
 
 type props = {
   notification: NotificationAddedPRNumber,

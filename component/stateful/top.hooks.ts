@@ -1,9 +1,11 @@
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 
 import {setToken} from "../../token"
-import firebase from '../../initialize/firebase'
-import {getAccessToken} from '../../helper/session'
-import {getScope} from '../../api/scope'
+import firebase from 'globalPlugin/firebase'
+import {getAccessToken, setAccessToken} from 'helper/session'
+import {getScope} from 'api/scope'
+import {getNotifications} from 'api/notification'
+import type {Notification, NotificationAddedPRNumber} from 'types/notification'
 
 type scope = {
   acceptedScope: string | null // アクションがチェックするスコープをリスト
@@ -13,6 +15,7 @@ type scope = {
 export const useGithubLogin = () => {
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false)
   const [scope, setScope] = useState<scope | null>(null)
+  const [list, setList] = useState<NotificationAddedPRNumber[]>([])
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged( (user) => {
@@ -37,7 +40,10 @@ export const useGithubLogin = () => {
           console.warn(user, 'not use')
     
           setIsLoggedin(true)
+          // APIコール時に api/domain で使う
           setToken(token)
+          // session storageに格納する
+          setAccessToken(token)
     
         }).catch(function(error) {
           console.log('auth error', error)
@@ -66,6 +72,33 @@ export const useGithubLogin = () => {
     })
   }, [isLoggedin])
 
+
+  useEffect(() => {
+    if (!isLoggedin) {
+      return
+    }
+    getNotifications().then(d => {
+      if (d.status === 200) {
+        return d.json()
+      } else {
+        return []
+      }
+    }).then(value => {
+      const valueAddedPRNumber: NotificationAddedPRNumber[] = value.map((d: Notification): NotificationAddedPRNumber => {
+        
+        var a = d.subject.url.split('/')
+        
+        return {
+          ...d,
+          prNumber: a[a.length -1]
+        }
+      })
+
+      setList(valueAddedPRNumber)
+    })
+  }, [isLoggedin])
+
+
   const logout = useCallback(() => {
     if (!isLoggedin) {
       console.warn('not logged in!')
@@ -78,8 +111,14 @@ export const useGithubLogin = () => {
     });
   }, [])
 
+  const filteredList = useMemo(() => {
+    // return list.filter(item => item.subject.type === 'PullRequest')
+    return list
+  }, [list])
+
 
   return {
+    filteredList,
     isLoggedin,
     scope,
     logout
