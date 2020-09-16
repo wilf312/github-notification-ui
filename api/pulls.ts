@@ -25,10 +25,13 @@ type mergePullRequestProps = {
 }
 export const mergePullRequest = ({owner, repository, base, head, commit_message}: mergePullRequestProps) => {
   console.log('getPullRequest')
-  return request(`/repos/${owner}/${repository}/merges`, 'POST', {
-    base,
-    head,
-    commit_message
+  return request(`/repos/${owner}/${repository}/merges`, {
+    method: 'POST',
+    body: {
+      base,
+      head,
+      commit_message
+    }
   })
 }
 
