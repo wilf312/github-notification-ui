@@ -20,17 +20,22 @@ const Wrap = styled.div`
 `
 
 export const Top = () => {
-  const {isLoggedin, logout, filteredList} = useGithubLogin()
+  const {isLoggedin, logout, filteredList, isLoadedNotificationList} = useGithubLogin()
 
   // ログイン前
   if (!isLoggedin) {
     return <Wrap>login...</Wrap>
   }
+  // 通知ロード中
+  if (!isLoadedNotificationList) {
+    return <Wrap />
+  }
   // 1件も通知がない
-  if (filteredList.length === 0) {
-  return <Wrap>{
-    `Congrats!🎉
-  You have not notification!`}</Wrap>
+  if (isLoadedNotificationList && filteredList.length === 0) {
+    return <Wrap>{
+      `Congrats!🎉
+      You have not notification!`}
+      </Wrap>
   }
   return <div>
     <div>

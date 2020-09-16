@@ -14,6 +14,7 @@ type scope = {
 
 export const useGithubLogin = () => {
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false)
+  const [isLoadedNotificationList, setIsLoadedNotificationList] = useState<boolean>(false)
   const [scope, setScope] = useState<scope | null>(null)
   const [list, setList] = useState<NotificationAddedPRNumber[]>([])
 
@@ -93,7 +94,7 @@ export const useGithubLogin = () => {
           prNumber: a[a.length -1]
         }
       })
-
+      setIsLoadedNotificationList(true)
       setList(valueAddedPRNumber)
     })
   }, [isLoggedin])
@@ -120,6 +121,7 @@ export const useGithubLogin = () => {
   return {
     filteredList,
     isLoggedin,
+    isLoadedNotificationList,
     scope,
     logout
   }
