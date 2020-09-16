@@ -74,10 +74,7 @@ export const useGithubLogin = () => {
   }, [isLoggedin])
 
 
-  useEffect(() => {
-    if (!isLoggedin) {
-      return
-    }
+  const getNotification = useCallback(() => {
     getNotifications().then(d => {
       if (d.status === 200) {
         return d.json()
@@ -97,6 +94,12 @@ export const useGithubLogin = () => {
       setIsLoadedNotificationList(true)
       setList(valueAddedPRNumber)
     })
+  }, [])
+  useEffect(() => {
+    if (!isLoggedin) {
+      return
+    }
+    getNotification()
   }, [isLoggedin])
 
 
@@ -123,6 +126,7 @@ export const useGithubLogin = () => {
     isLoggedin,
     isLoadedNotificationList,
     scope,
-    logout
+    logout,
+    getNotification
   }
 }

@@ -6,6 +6,7 @@ import {markNotificationAsThread} from 'api/notification'
 type props = {
   notification: NotificationAddedPRNumber,
   isOwner: boolean
+  getNotification: () => void
 }
 export const NotificationItem = (props: props) => {
   const notification = props.notification
@@ -33,13 +34,15 @@ export const NotificationItem = (props: props) => {
   }}>
     {props.isOwner && pr?.state === 'open' &&
       <div>
-        <button type="button" onClick={() => {
-          mergePullRequest({
+        <button type="button" onClick={async () => {
+          await mergePullRequest({
             owner: repository.owner.login,
             repository: repository.name,
             base: pr.base.ref,
             head: pr.head.ref
           })
+          await markNotificationAsThread(notification.id)
+          props.getNotification()
         }}>merge</button>
       </div>
     }

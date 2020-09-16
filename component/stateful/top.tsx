@@ -20,7 +20,7 @@ const Wrap = styled.div`
 `
 
 export const Top = () => {
-  const {isLoggedin, logout, filteredList, isLoadedNotificationList} = useGithubLogin()
+  const {isLoggedin, logout, filteredList, isLoadedNotificationList, getNotification} = useGithubLogin()
 
   // ログイン前
   if (!isLoggedin) {
@@ -53,7 +53,7 @@ export const Top = () => {
     </div>
 
     {filteredList.map((d: NotificationAddedPRNumber) => {
-      return <NotificationItem key={d.id} notification={d} isOwner={'wilf312' === d.repository.owner.login} />
+      return <NotificationItem key={d.id} notification={d} isOwner={'wilf312' === d.repository.owner.login} getNotification={getNotification} />
     })}
   </div>
 }
