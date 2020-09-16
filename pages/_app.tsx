@@ -1,4 +1,5 @@
 import '../globalPlugin/dark.min.css'
+import '../globalPlugin/default.css'
 
 import type { AppProps /*, AppContext */ } from 'next/app'
 
