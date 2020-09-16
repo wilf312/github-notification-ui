@@ -46,8 +46,6 @@ export const Top = () => {
     return <div>認証中</div>
   }
   return <div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css/dist/dark.min.css" />
-
     <div>
       <button type="button" onClick={() => {
         markNotificationAsRead()
