@@ -3,6 +3,8 @@ import * as firebase from "firebase/app";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/analytics";
+// Add the Performance Monitoring library
+import "firebase/performance";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCZqWEydd_55hjlGjYuZ0djs38KPtrdrVw",
@@ -15,10 +17,14 @@ const firebaseConfig = {
   measurementId: "G-RC5D8DCXKV"
 };
 
+let perf = null
+
 // Initialize Firebase
 if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+  // Initialize Performance Monitoring and get a reference to the service
+  perf = firebase.performance();
 }
 
 export default firebase
