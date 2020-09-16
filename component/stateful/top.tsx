@@ -1,8 +1,7 @@
 import { useEffect, useState, useMemo } from "react"
-import {getNotifications, markNotificationAsRead} from '../../api/notification'
-import {getPullRequest} from '../../api/pulls'
-import type {Notification, NotificationAddedPRNumber} from '../../types/notification'
-import {NotificationItem} from '../../component/stateless/NotificationItem'
+import {getNotifications, markNotificationAsRead} from 'api/notification'
+import type {Notification, NotificationAddedPRNumber} from 'types/notification'
+import {NotificationItem} from 'component/stateless/NotificationItem'
 
 import {useGithubLogin} from './top.hooks'
 
@@ -43,7 +42,7 @@ export const Top = () => {
 
 
   if (!isLoggedin) {
-    return <div>認証中</div>
+    return <div>login...</div>
   }
   return <div>
     <div>

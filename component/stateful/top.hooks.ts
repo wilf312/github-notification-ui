@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from "react"
 
 import {setToken} from "../../token"
-import firebase from '../../globalPlugin/firebase'
-import {getAccessToken} from '../../helper/session'
-import {getScope} from '../../api/scope'
+import firebase from 'globalPlugin/firebase'
+import {getAccessToken, setAccessToken} from 'helper/session'
+import {getScope} from 'api/scope'
 
 type scope = {
   acceptedScope: string | null // アクションがチェックするスコープをリスト
@@ -37,7 +37,10 @@ export const useGithubLogin = () => {
           console.warn(user, 'not use')
     
           setIsLoggedin(true)
+          // APIコール時に api/domain で使う
           setToken(token)
+          // session storageに格納する
+          setAccessToken(token)
     
         }).catch(function(error) {
           console.log('auth error', error)
