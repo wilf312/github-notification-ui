@@ -1,48 +1,36 @@
-import { useEffect, useState, useMemo } from "react"
-import {getNotifications, markNotificationAsRead} from 'api/notification'
-import type {Notification, NotificationAddedPRNumber} from 'types/notification'
+import {markNotificationAsRead} from 'api/notification'
+import type {NotificationAddedPRNumber} from 'types/notification'
 import {NotificationItem} from 'component/stateless/NotificationItem'
 
 import {useGithubLogin} from './top.hooks'
 
+import styled from 'styled-components'
+
+const Wrap = styled.div`
+  width: 100vw;
+  height: 100vh;
+  font-size: 44px;
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  place-items: center;
+  white-space: pre-line;
+
+`
+
 export const Top = () => {
-  const [list, setList] = useState<NotificationAddedPRNumber[]>([])
-  const {isLoggedin, logout} = useGithubLogin()
+  const {isLoggedin, logout, filteredList} = useGithubLogin()
 
-  useEffect(() => {
-    if (!isLoggedin) {
-      return
-    }
-    getNotifications().then(d => {
-      if (d.status === 200) {
-        return d.json()
-      } else {
-        return []
-      }
-    }).then(value => {
-      const valueAddedPRNumber: NotificationAddedPRNumber[] = value.map((d: Notification): NotificationAddedPRNumber => {
-        
-        var a = d.subject.url.split('/')
-        
-        return {
-          ...d,
-          prNumber: a[a.length -1]
-        }
-      })
-
-      setList(valueAddedPRNumber)
-    })
-  }, [isLoggedin])
-
-
-  const filteredList = useMemo(() => {
-    // return list.filter(item => item.subject.type === 'PullRequest')
-    return list
-  }, [list])
-
-
+  // ログイン前
   if (!isLoggedin) {
-    return <div>login...</div>
+    return <Wrap>login...</Wrap>
+  }
+  // 1件も通知がない
+  if (filteredList.length === 0) {
+  return <Wrap>{
+    `Congrats!🎉
+  You have not notification!`}</Wrap>
   }
   return <div>
     <div>
@@ -51,9 +39,6 @@ export const Top = () => {
       }}>mark as all done</button>
     </div>
     <div>
-      デバッグ用
-
-      logout
       <button type="button" onClick={() => {
         logout()
       }}>logout</button>
